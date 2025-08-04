@@ -1,12 +1,5 @@
-import sqlite3
-
-def test_db_insert():
-    conn = sqlite3.connect(":memory:")
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)")
-    cursor.execute("INSERT INTO test (name) VALUES ('pytest')")
-    conn.commit()
-    cursor.execute("SELECT name FROM test")
-    result = cursor.fetchone()
-    assert result[0] == "pytest"
-    conn.close()
+def test_users_table_has_data(db_conn):
+    with db_conn.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) as count FROM users")
+        result = cursor.fetchone()
+        assert result["count"] > 0, "users table is empty"
