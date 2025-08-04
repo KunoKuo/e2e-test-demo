@@ -5,6 +5,8 @@ import time
 
 def test_google_search():
     driver = webdriver.Chrome()
+
+    # Yahoo 首頁的搜尋欄位 name 叫 'q'
     driver.get("https://www.google.com")
     search = driver.find_element(By.NAME, "q")
     search.send_keys("pytest selenium")
