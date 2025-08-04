@@ -6,3 +6,4 @@ selenium
 webdriver-manager
 pymysql
 cryptography>=40.0.0
+pytest-cov
