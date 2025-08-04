@@ -5,3 +5,4 @@ pytest-html
 selenium
 webdriver-manager
 pymysql
+cryptography>=40.0.0
