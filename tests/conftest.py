@@ -5,6 +5,7 @@ import os
 import signal
 import time
 import requests
+from selenium import webdriver
 
 # 啟動 Flask server（只有 module 內第一次測試執行前會啟動）
 @pytest.fixture(scope="module", autouse=True)
@@ -53,3 +54,10 @@ def db_conn():
     )
     yield conn
     conn.close()
+
+# UI 測試用的 WebDriver fixture
+@pytest.fixture(scope="function")
+def driver():
+    driver = webdriver.Chrome()
+    yield driver
+    driver.quit()
