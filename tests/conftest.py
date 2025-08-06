@@ -11,7 +11,7 @@ from selenium import webdriver
 @pytest.fixture(scope="module", autouse=True)
 def start_flask_server():
     proc = subprocess.Popen(
-        ["python", "app/main.py"],
+        ["python3", "app/main.py"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         preexec_fn=os.setsid
@@ -42,7 +42,7 @@ def start_flask_server():
 
 
 # 提供資料庫連線
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def db_conn():
     conn = pymysql.connect(
         host="localhost",
@@ -52,8 +52,9 @@ def db_conn():
         database="member_system",
         cursorclass=pymysql.cursors.DictCursor,
     )
+    conn.begin()
     yield conn
-    conn.close()
+    conn.rollback()
 
 # UI 測試用的 WebDriver fixture
 @pytest.fixture(scope="function")
