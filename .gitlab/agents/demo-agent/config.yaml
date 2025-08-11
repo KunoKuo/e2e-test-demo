@@ -1,0 +1,4 @@
+ci_access:
+  projects:
+    - id: test6733916/pytest
+      default_namespace: default
