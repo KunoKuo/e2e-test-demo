@@ -48,8 +48,8 @@ def db_conn():
         host="localhost",
         port=3306,
         user="root",
-        password="your_password",
-        database="member_system",
+        password="2kgk1688",
+        database="mydatabase",
         cursorclass=pymysql.cursors.DictCursor,
     )
     conn.begin()

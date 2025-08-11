@@ -5,3 +5,7 @@ tests/__pycache__/test_ui.cpython-*
 tests/__pycache__/test_ui_google.cpython-*
 tests/__pycache__/test_ui_yahoo.cpython-*
 tests/report.html
+
+mysql-data/performance_schema*
+.env
+mysql-data/

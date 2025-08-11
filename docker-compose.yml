@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: ${MYSQL_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "${MYSQL_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  mysql-backup:
+    image: alpine:latest
+    container_name: mysql-backup
+    depends_on:
+      - mysql
+    volumes:
+      - ./mysql-backups:/backups
+    entrypoint: >
+      /bin/sh -c "
+      apk add --no-cache mysql-client &&
+      while true; do
+        TIMESTAMP=$(date +%F_%H-%M-%S);
+        mysqldump -h ${MYSQL_CONTAINER_NAME} -P 3306 -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} > /backups/${MYSQL_DATABASE}_$${TIMESTAMP}.sql;
+        echo '✅ 已備份到 /backups/${MYSQL_DATABASE}_'$${TIMESTAMP}.sql;
+        sleep 86400;
+      done
+      "

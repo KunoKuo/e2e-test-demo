@@ -10,18 +10,18 @@ def test_members_table_schema(db_conn):
     with db_conn.cursor() as cursor:
         cursor.execute("DESCRIBE members")
         columns = {column['Field'] for column in cursor.fetchall()}
-        expected_columns = {'id', 'name', 'email'}
+        expected_columns = {'id', 'name', 'email', 'password'}
         assert expected_columns.issubset(columns), \
             f"members table schema is not correct. Missing columns: {expected_columns - columns}"
 
-@pytest.mark.parametrize("name, email", [
-    ("test_user_1", "test1@example.com"),
-    ("test_user_2", "test2@example.com"),
+@pytest.mark.parametrize("name, email, password", [
+    ("test_user_1", "test1@example.com", "password123"),
+    ("test_user_2", "test2@example.com", "password456"),
 ])
-def test_add_and_delete_member(db_conn, name, email):
+def test_add_and_delete_member(db_conn, name, email, password):
     with db_conn.cursor() as cursor:
         # Add a new member
-        cursor.execute("INSERT INTO members (name, email) VALUES (%s, %s)", (name, email))
+        cursor.execute("INSERT INTO members (name, email, password) VALUES (%s, %s, %s)", (name, email, password))
 
         # Verify the member was added
         cursor.execute("SELECT * FROM members WHERE name = %s", (name,))
